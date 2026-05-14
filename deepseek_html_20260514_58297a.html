@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Welcome Traders | Wholesale Auto Parts Pakistan</title>
+    <meta name="description" content="Welcome Traders - Leading wholesale auto parts supplier in Pakistan. Genuine brake pads, engine oil filters, suspension kits, batteries and more.">
+    <meta name="author" content="Muhammad Nabeel Khan">
+    <meta name="robots" content="index, follow">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-dark: #0A0A0F;
+            --bg-darker: #050508;
+            --bg-card: #14141C;
+            --bg-elevated: #1A1A24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0C0;
+            --text-muted: #6B6B7A;
+            --border: #2A2A35;
+            --accent: #E63946;
+            --accent-dark: #C1121F;
+            --success: #2A9D8F;
+            --warning: #E9C46A;
+            --whatsapp: #25D366;
+            --shadow: 0 8px 24px rgba(0,0,0,0.3);
+            --transition: all 0.25s ease;
+        }
+        body.light-mode {
+            --bg-dark: #F8F9FA;
+            --bg-darker: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #F1F3F5;
+            --text-primary: #1A1A2E;
+            --text-secondary: #4A4A5A;
+            --text-muted: #8A8A9A;
+            --border: #E0E0E6;
+            --shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); transition: var(--transition); line-height: 1.5; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
+        
+        .site-header { background: var(--bg-darker); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 20px 0; gap: 20px; }
+        .brand-area { display: flex; flex-direction: column; gap: 4px; }
+        .logo { display: flex; align-items: baseline; gap: 8px; }
+        .logo-icon { font-size: 28px; color: var(--accent); }
+        .logo h1 { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .tagline { font-size: 0.7rem; color: var(--text-secondary); }
+        .search-bar { flex: 1; max-width: 380px; }
+        .search-bar input { width: 100%; padding: 12px 18px; border-radius: 48px; border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text-primary); font-size: 0.9rem; }
+        .search-bar input:focus { outline: none; border-color: var(--accent); }
+        
+        .nav-menu ul { display: flex; gap: 28px; list-style: none; flex-wrap: wrap; margin: 0; padding: 0; }
+        .nav-menu li { display: inline-block; }
+        .nav-menu a { color: var(--text-primary); text-decoration: none; font-weight: 500; transition: var(--transition); font-size: 0.9rem; cursor: pointer; display: inline-block; padding: 8px 0; }
+        .nav-menu a:hover { color: var(--accent); }
+        .nav-menu .active { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 6px; }
+        
+        .header-actions { display: flex; gap: 20px; align-items: center; }
+        .theme-toggle { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 40px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+        .icon-btn { color: var(--text-primary); font-size: 1.3rem; position: relative; text-decoration: none; cursor: pointer; background: none; border: none; }
+        .cart-count { position: absolute; top: -8px; right: -12px; background: var(--accent); font-size: 0.7rem; border-radius: 30px; padding: 2px 6px; color: white; font-weight: bold; min-width: 18px; text-align: center; }
+        
+        .hero { background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 100%); padding: 80px 0; text-align: center; border-bottom: 1px solid var(--border); }
+        .hero h2 { font-size: 3rem; margin-bottom: 16px; font-weight: 800; }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 32px; }
+        
+        .btn { display: inline-block; background: var(--accent); color: white; padding: 14px 32px; border-radius: 48px; font-weight: 600; transition: var(--transition); border: none; cursor: pointer; font-size: 0.95rem; text-decoration: none; }
+        .btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: white; }
+        .btn-sm { padding: 8px 16px; font-size: 0.8rem; border-radius: 40px; cursor: pointer; border: none; font-weight: 500; transition: var(--transition); }
+        .btn-wa { background: var(--whatsapp); color: white; }
+        .btn-wa:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-cart { background: var(--accent); color: white; }
+        .btn-cart:hover { background: var(--accent-dark); }
+        .btn-view { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-view:hover { border-color: var(--accent); }
+        
+        .section-title { font-size: 2rem; margin: 56px 0 28px; border-left: 5px solid var(--accent); padding-left: 24px; font-weight: 700; }
+        
+        .category-grid, .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; }
+        .category-card { background: var(--bg-card); border: 1px solid var(--border); padding: 32px 20px; text-align: center; border-radius: 20px; transition: var(--transition); cursor: pointer; }
+        .category-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: var(--shadow); }
+        .category-card i { font-size: 3rem; color: var(--accent); margin-bottom: 16px; display: block; }
+        .category-card h4 { font-size: 1.2rem; margin-bottom: 8px; }
+        
+        .product-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: var(--transition); position: relative; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .product-img { height: 220px; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .product-card:hover .product-img img { transform: scale(1.05); }
+        
+        .product-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; z-index: 2; }
+        .badge-stock { background: var(--success); color: white; }
+        .badge-limited { background: var(--warning); color: #1a1a1a; }
+        .badge-fast { background: #FF6B35; color: white; }
+        .badge-oem { background: #1E3A8A; color: white; }
+        .badge-seller { background: #8B5CF6; color: white; }
+        .badge-new { background: #10B981; color: white; }
+        
+        .stock-status { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; z-index: 2; }
+        .product-info { padding: 20px; }
+        .product-title { font-weight: 600; font-size: 1rem; margin-bottom: 8px; line-height: 1.3; }
+        .price { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+        .card-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+        
+        .garage-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 20px 0; }
+        .garage-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+        .garage-vehicles { display: flex; gap: 12px; flex-wrap: wrap; }
+        .garage-vehicle { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 40px; padding: 8px 16px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: var(--transition); }
+        .garage-vehicle:hover { border-color: var(--accent); background: var(--accent-dark); }
+        .remove-vehicle { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; padding: 0 4px; }
+        .remove-vehicle:hover { color: var(--accent); }
+        
+        .filter-panel { background: var(--bg-card); border-radius: 24px; padding: 28px; margin: 32px 0; display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; border: 1px solid var(--border); }
+        .filter-group { flex: 1; min-width: 160px; }
+        .filter-group label { display: block; margin-bottom: 8px; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .filter-group select { width: 100%; padding: 12px 16px; border-radius: 40px; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-primary); cursor: pointer; }
+        
+        .cart-sidebar { position: fixed; right: -450px; top: 0; width: 420px; height: 100%; background: var(--bg-darker); z-index: 1500; transition: 0.3s ease; padding: 28px; box-shadow: var(--shadow); overflow-y: auto; border-left: 1px solid var(--border); }
+        .cart-sidebar.open { right: 0; }
+        .cart-item { margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .quantity-selector { display: inline-flex; gap: 8px; margin-top: 8px; align-items: center; }
+        .qty-btn { background: var(--bg-elevated); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
+        .remove-btn { background: var(--accent); color: white; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; margin-left: 8px; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--bg-card); max-width: 900px; width: 90%; border-radius: 28px; padding: 32px; max-height: 85vh; overflow-y: auto; }
+        .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 768px) { .product-detail-grid { grid-template-columns: 1fr; } }
+        .detail-image { width: 100%; border-radius: 16px; overflow: hidden; }
+        .detail-image img { width: 100%; height: auto; object-fit: cover; }
+        .spec-list { list-style: none; padding: 0; }
+        .spec-list li { padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .compatibility-tag { display: inline-block; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; margin: 4px; font-size: 0.75rem; }
+        
+        .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 28px; padding: 32px; }
+        .form-input { width: 100%; padding: 14px 18px; margin-bottom: 16px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 40px; color: var(--text-primary); font-size: 0.9rem; }
+        .form-input:focus { outline: none; border-color: var(--accent); }
+        
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 24px; border-radius: 48px; z-index: 3000; font-weight: 500; animation: fadeInOut 3s ease; }
+        @keyframes fadeInOut { 0% { opacity: 0; bottom: 0; } 15% { opacity: 1; bottom: 30px; } 85% { opacity: 1; bottom: 30px; } 100% { opacity: 0; bottom: 0; } }
+        
+        .footer { background: var(--bg-darker); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 60px; text-align: center; }
+        .section { display: block; }
+        .section-hidden { display: none; }
+        .results-header { background: var(--bg-card); border-radius: 16px; padding: 16px 24px; margin: 20px 0; border-left: 4px solid var(--accent); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .back-link { color: var(--accent); cursor: pointer; text-decoration: none; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+        
+        @media (max-width: 992px) { .header-inner { flex-direction: column; align-items: stretch; } .hero h2 { font-size: 2rem; } }
+        @media (max-width: 576px) { .container { padding: 0 20px; } .cart-sidebar { width: 100%; right: -100%; } }
+    </style>
+</head>
+<body>
+
+<!-- Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h3>Shopping Cart</h3>
+        <i class="fas fa-times" style="cursor:pointer; font-size:1.4rem;" onclick="closeCart()"></i>
+    </div>
+    <div id="cartItemsList"></div>
+    <div id="cartTotal" style="margin-top:24px; font-weight:bold; font-size:1.2rem;"></div>
+    <button class="btn" style="width:100%; margin-top:24px;" onclick="proceedToCheckout()">Proceed to Checkout</button>
+</div>
+
+<!-- Header -->
+<div class="site-header">
+    <div class="container header-inner">
+        <div class="brand-area">
+            <div class="logo"><i class="fas fa-car logo-icon"></i><h1>WELCOME TRADERS</h1></div>
+            <div class="tagline">Premium Automotive Parts – Wholesale Deals Since 2010</div>
+        </div>
+        <div class="search-bar"><input type="text" id="globalSearch" placeholder="Search brakes, filters, batteries, suspension..." onkeyup="searchProducts()"></div>
+        <div class="nav-menu">
+            <ul>
+                <li><a class="nav-link" data-page="home">Home</a></li>
+                <li><a class="nav-link" data-page="categories">Categories</a></li>
+                <li><a class="nav-link" data-page="products">Products</a></li>
+                <li><a class="nav-link" data-page="dealer">Dealer</a></li>
+                <li><a class="nav-link" data-page="pos">POS Sync</a></li>
+            </ul>
+        </div>
+        <div class="header-actions">
+            <div class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i><span>Mode</span></div>
+            <button class="icon-btn" onclick="openCart()"><i class="fas fa-shopping-cart"></i><span id="cartCount" class="cart-count">0</span></button>
+        </div>
+    </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="heroSection">
+    <div class="container">
+        <h2>Wholesale Auto Parts<br>For Professional Traders</h2>
+        <p>Genuine OEM-quality parts | Dealer pricing | Express shipping | Bulk discounts</p>
+        <button class="btn" id="shopNowBtn">Shop Now</button>
+        <button class="btn btn-outline" id="becomeDealerBtn" style="margin-left:16px;">Become a Dealer</button>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Smart Vehicle Garage Section -->
+    <div class="garage-section" id="garageSection">
+        <div class="garage-header">
+            <div><i class="fas fa-garage" style="color:var(--accent); margin-right:8px;"></i><strong>My Garage</strong> <span style="font-size:0.7rem; color:var(--text-muted);">(Saved Vehicles)</span></div>
+            <button class="btn-sm btn-outline" onclick="openAddVehicleModal()"><i class="fas fa-plus"></i> Add Vehicle</button>
+        </div>
+        <div class="garage-vehicles" id="garageVehiclesList">
+            <span style="color:var(--text-muted); font-size:0.8rem;">No vehicles saved. Click "Add Vehicle" to save your cars.</span>
+        </div>
+    </div>
+
+    <div class="filter-panel" id="filterPanel">
+        <div class="filter-group"><label>Select Make</label><select id="makeFilter"></select></div>
+        <div class="filter-group"><label>Select Year</label><select id="yearFilter"></select></div>
+        <div class="filter-group"><label>Select Model</label><select id="modelFilter"><option value="">Select Make & Year first</option></select></div>
+        <div><button class="btn" id="applyFilterBtn">Show Compatible Parts</button></div>
+    </div>
+
+    <div id="categoriesSection" class="section">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="category-grid" id="categoryGrid"></div>
+    </div>
+
+    <div id="productsSection" class="section section-hidden">
+        <h2 class="section-title">Premium Products</h2>
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+
+    <div id="compatibleSection" class="section section-hidden">
+        <div id="compatibleHeader" class="results-header">
+            <span id="compatibleTitle"><i class="fas fa-car"></i> Compatible Parts</span>
+            <span class="back-link" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back to Home</span>
+        </div>
+        <div class="product-grid" id="compatibleGrid"></div>
+    </div>
+
+    <div id="dealerSection" class="section section-hidden">
+        <h2 class="section-title">Wholesale / Dealer Program</h2>
+        <div class="form-card">
+            <form id="dealerForm" onsubmit="return false;">
+                <input type="text" placeholder="Business Name" id="dealerBusiness" required class="form-input">
+                <input type="text" placeholder="Owner Full Name" id="dealerName" required class="form-input">
+                <input type="email" placeholder="Email Address" id="dealerEmail" required class="form-input">
+                <input type="tel" placeholder="Phone Number" id="dealerPhone" required class="form-input">
+                <textarea placeholder="Monthly volume / Bulk requirements" rows="3" id="dealerMsg" class="form-input" style="border-radius:20px;"></textarea>
+                <div style="display:flex; gap:16px; flex-wrap:wrap;"><button type="submit" class="btn" onclick="submitDealerInquiry()">Submit Dealer Inquiry</button><button type="button" class="btn btn-outline" onclick="whatsappDealerInquiry()"><i class="fab fa-whatsapp"></i> Inquire via WhatsApp</button></div>
+                <div id="dealerSuccess" style="margin-top:16px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="posSection" class="section section-hidden">
+        <h2 class="section-title">POS System Integration</h2>
+        <div class="form-card">
+            <h3 style="margin-bottom:16px;">CSV/Excel Import-Export</h3>
+            <p style="margin-bottom:20px;">Sync your offline POS inventory with the website.</p>
+            <div style="display:flex; gap:16px; flex-wrap:wrap;">
+                <button class="btn" id="exportCSVBtn"><i class="fas fa-download"></i> Export Products (CSV)</button>
+                <label class="btn btn-outline" style="cursor:pointer;"><i class="fas fa-upload"></i> Import CSV<input type="file" id="importCSV" accept=".csv" style="display:none;"></label>
+            </div>
+            <div id="importStatus" style="margin-top:16px;"></div>
+        </div>
+    </div>
+
+    <div id="checkoutSection" class="section section-hidden">
+        <h2 class="section-title">Secure Checkout</h2>
+        <div class="form-card">
+            <form id="checkoutForm" onsubmit="return false;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                    <input type="text" placeholder="Full Name" id="chName" required class="form-input">
+                    <input type="tel" placeholder="Phone Number" id="chPhone" required class="form-input">
+                    <input type="text" placeholder="Address" id="chAddress" required class="form-input">
+                    <input type="text" placeholder="City" id="chCity" required class="form-input">
+                </div>
+                <textarea placeholder="Order Notes (optional)" id="chNotes" rows="2" class="form-input" style="border-radius:20px;"></textarea>
+                <div style="margin:16px 0;"><label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label></div>
+                <button type="submit" class="btn" style="width:100%;" onclick="placeOrder()">Place Order (WhatsApp Confirmation)</button>
+            </form>
+            <div id="checkoutSuccess" style="margin-top:16px;"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2026 Welcome Traders Wholesale Auto Parts Supply</p>
+        <p style="margin-top:8px; font-size:0.8rem; color:var(--text-muted);">Developed by Muhammad Nabeel Khan</p>
+    </div>
+</footer>
+
+<!-- Add Vehicle Modal -->
+<div id="addVehicleModal" class="modal" onclick="if(event.target===this) closeAddVehicleModal()">
+    <div class="modal-content" style="max-width:500px;">
+        <h3 style="margin-bottom:20px;"><i class="fas fa-garage"></i> Add Vehicle to Garage</h3>
+        <select id="vehicleMake" class="form-input"></select>
+        <select id="vehicleYear" class="form-input"></select>
+        <select id="vehicleModel" class="form-input"><option value="">Select Make & Year first</option></select>
+        <div style="display:flex; gap:16px; margin-top:20px;">
+            <button class="btn" onclick="addVehicleToGarage()">Save Vehicle</button>
+            <button class="btn btn-outline" onclick="closeAddVehicleModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Product Detail Modal -->
+<div id="quickViewModal" class="modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-content" id="quickViewContent"></div>
+</div>
+
+<script>
+    // ========== REALISTIC AUTOMOTIVE PRODUCT DATA ==========
+    const vehicleData = {
+        "Toyota": {"2018": ["Corolla", "Yaris", "Camry", "Fortuner"],"2019": ["Corolla", "Yaris", "Camry", "Fortuner", "Hilux"],"2020": ["Corolla", "Yaris", "Camry", "Fortuner", "Hilux", "Prado"],"2021": ["Corolla", "Yaris", "Camry", "Fortuner", "Hilux", "Prado", "Revo"],"2022": ["Corolla", "Yaris", "Camry", "Fortuner", "Hilux", "Prado", "Revo"],"2023": ["Corolla Cross", "Yaris", "Camry", "Fortuner", "Hilux", "Revo", "Land Cruiser"],"2024": ["Corolla Cross", "Yaris", "Camry", "Fortuner", "Hilux", "Land Cruiser"],"2025": ["Corolla Cross", "Camry", "Fortuner", "Hilux", "Land Cruiser"],"2026": ["Corolla Cross", "Camry", "Fortuner", "Land Cruiser"]},
+        "Honda": {"2018": ["Civic", "City", "BR-V"],"2019": ["Civic", "City", "BR-V", "Accord"],"2020": ["Civic", "City", "BR-V", "Accord", "CR-V"],"2021": ["Civic", "City", "Accord", "CR-V", "HR-V"],"2022": ["Civic", "City", "Accord", "CR-V", "HR-V"],"2023": ["Civic", "City", "HR-V", "CR-V", "Pilot"],"2024": ["Civic", "City", "HR-V", "CR-V"],"2025": ["Civic", "City", "HR-V", "CR-V"],"2026": ["Civic", "City", "HR-V", "CR-V"]},
+        "Suzuki": {"2018": ["Swift", "Cultus", "Wagon R"],"2019": ["Swift", "Cultus", "Wagon R", "Jimny"],"2020": ["Swift", "Cultus", "Wagon R", "Jimny", "Alto"],"2021": ["Swift", "Cultus", "Wagon R", "Jimny", "Alto"],"2022": ["Swift", "Cultus", "Wagon R", "Jimny", "Alto", "Every"],"2023": ["Swift", "Cultus", "Wagon R", "Jimny", "Alto"],"2024": ["Swift", "Cultus", "Wagon R", "Jimny"],"2025": ["Swift", "Cultus", "Jimny"],"2026": ["Swift", "Cultus", "Jimny"]},
+        "Hyundai": {"2018": ["Elantra", "Tucson", "Santa Fe"],"2019": ["Elantra", "Tucson", "Santa Fe", "Sonata"],"2020": ["Elantra", "Tucson", "Santa Fe", "Sonata", "Accent"],"2021": ["Elantra", "Tucson", "Santa Fe", "Sonata", "Accent"],"2022": ["Elantra", "Tucson", "Santa Fe", "Sonata", "Accent", "Kona"],"2023": ["Elantra", "Tucson", "Santa Fe", "Kona", "Palisade"],"2024": ["Elantra", "Tucson", "Santa Fe", "Kona", "Palisade"],"2025": ["Elantra", "Tucson", "Santa Fe", "Kona"],"2026": ["Elantra", "Tucson", "Kona"]},
+        "Kia": {"2018": ["Sportage", "Picanto", "Sorento"],"2019": ["Sportage", "Picanto", "Sorento", "Stonic"],"2020": ["Sportage", "Picanto", "Sorento", "Stonic", "Carnival"],"2021": ["Sportage", "Picanto", "Sorento", "Stonic", "Carnival"],"2022": ["Sportage", "Picanto", "Sorento", "Stonic", "Carnival", "K5"],"2023": ["Sportage", "Picanto", "Sorento", "Stonic", "K5"],"2024": ["Sportage", "Picanto", "Sorento", "K5", "EV6"],"2025": ["Sportage", "Picanto", "Sorento", "EV6"],"2026": ["Sportage", "Picanto", "Sorento", "EV6"]},
+        "Nissan": {"2018": ["Sunny", "X-Trail", "Altima"],"2019": ["Sunny", "X-Trail", "Altima", "Patrol"],"2020": ["Sunny", "X-Trail", "Altima", "Patrol", "Juke"],"2021": ["Sunny", "X-Trail", "Altima", "Patrol", "Juke"],"2022": ["Sunny", "X-Trail", "Altima", "Patrol", "Juke", "Kicks"],"2023": ["Sunny", "X-Trail", "Altima", "Patrol", "Kicks"],"2024": ["Sunny", "X-Trail", "Patrol", "Kicks"],"2025": ["Sunny", "X-Trail", "Patrol"],"2026": ["Sunny", "X-Trail"]},
+        "BMW": {"2018": ["3 Series", "5 Series", "X3"],"2019": ["3 Series", "5 Series", "X3", "X5"],"2020": ["3 Series", "5 Series", "X3", "X5", "7 Series"],"2021": ["3 Series", "5 Series", "X3", "X5", "7 Series"],"2022": ["3 Series", "5 Series", "X3", "X5", "7 Series", "X7"],"2023": ["3 Series", "5 Series", "X3", "X5", "X7"],"2024": ["3 Series", "5 Series", "X3", "X5", "X7", "i4"],"2025": ["3 Series", "5 Series", "X5", "X7", "i4"],"2026": ["3 Series", "5 Series", "X5", "i4"]},
+        "Audi": {"2018": ["A4", "A6", "Q5"],"2019": ["A4", "A6", "Q5", "Q7"],"2020": ["A4", "A6", "Q5", "Q7", "A3"],"2021": ["A4", "A6", "Q5", "Q7", "A3", "e-tron"],"2022": ["A4", "A6", "Q5", "Q7", "A3", "e-tron"],"2023": ["A4", "A6", "Q5", "Q7", "e-tron"],"2024": ["A4", "A6", "Q5", "Q7", "e-tron", "RS7"],"2025": ["A4", "A6", "Q5", "e-tron"],"2026": ["A4", "A6", "Q5", "e-tron"]},
+        "Ford": {"2018": ["Mustang", "F-150", "Explorer"],"2019": ["Mustang", "F-150", "Explorer", "Focus"],"2020": ["Mustang", "F-150", "Explorer", "Focus", "Ranger"],"2021": ["Mustang", "F-150", "Explorer", "Ranger", "Bronco"],"2022": ["Mustang", "F-150", "Explorer", "Ranger", "Bronco", "Maverick"],"2023": ["Mustang", "F-150", "Explorer", "Ranger", "Bronco", "Maverick"],"2024": ["Mustang", "F-150", "Ranger", "Bronco", "Maverick"],"2025": ["Mustang", "F-150", "Ranger", "Bronco"],"2026": ["Mustang", "F-150", "Ranger"]}
+    };
+    
+    const makesList = Object.keys(vehicleData);
+    const yearsList = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+    
+    // REAL AUTOMOTIVE CATEGORIES WITH REAL PRODUCT NAMES
+    const categoriesData = {
+        "Engine Parts": ["Engine Oil Filter", "Air Filter Element", "Spark Plug Set", "Timing Belt Kit", "Fuel Injector", "Alternator Assembly", "Starter Motor", "Radiator Coolant"],
+        "Brake System": ["Front Brake Pads", "Rear Brake Shoes", "Brake Disc Rotor", "Brake Caliper", "Brake Master Cylinder", "Brake Fluid DOT4", "ABS Sensor", "Parking Brake Cable"],
+        "Suspension System": ["Shock Absorber Set", "Coil Spring", "Control Arm", "Ball Joint Kit", "Stabilizer Link", "Strut Mount", "Suspension Bushing Kit", "Tie Rod End"],
+        "Transmission Parts": ["Clutch Kit", "Clutch Plate", "Transmission Oil", "CV Joint Kit", "Drive Shaft", "Gearbox Mount", "Transmission Filter", "Flywheel"],
+        "Tires & Wheels": ["All-Season Radial Tire", "Alloy Wheel Rim", "Tire Pressure Sensor", "Wheel Hub Assembly", "Tire Repair Kit", "Wheel Spacers", "Hubcap Set", "Valve Stem Kit"],
+        "Oil & Lubricants": ["5W30 Engine Oil", "10W40 Diesel Oil", "Automatic Transmission Fluid", "Brake Fluid DOT4", "Power Steering Fluid", "Coolant Antifreeze", "Gear Oil 80W90", "Grease Cartridge"],
+        "Filters": ["Engine Oil Filter", "Cabin AC Filter", "Fuel Filter", "Air Intake Filter", "Transmission Filter", "Oil Filter Wrench", "Filter Housing", "Hydraulic Filter"],
+        "Batteries": ["Maintenance Free Battery 60Ah", "AGM Start-Stop Battery", "Deep Cycle Battery", "Battery Terminal Kit", "Battery Charger", "Jump Starter Cable", "Battery Tester", "Solar Battery"],
+        "Electrical & Lighting": ["LED Headlight Bulb", "Fog Light Assembly", "Tail Light LED", "Turn Signal Light", "Wiper Blade Set", "Fuse Box Kit", "Relay Switch", "Ignition Coil"],
+        "Accessories": ["Car Floor Mat Set", "Seat Cover", "Steering Wheel Cover", "Phone Mount Holder", "Car Vacuum Cleaner", "Dashboard Camera", "USB Charger", "Car Perfume"],
+        "Body Parts": ["Front Bumper Cover", "Rear Bumper", "Side Mirror Assembly", "Headlight Assembly", "Taillight Assembly", "Grille Mesh", "Door Handle", "Windshield Wiper"],
+        "Cooling System": ["Radiator Assembly", "Water Pump", "Coolant Reservoir", "Radiator Fan", "Thermostat Housing", "Cooling Hose Kit", "Heater Core", "Radiator Cap"]
+    };
+    
+    const brands = ["Bosch", "Brembo", "Denso", "Valeo", "Mann Filter", "Mobil 1", "Castrol", "Bilstein", "TRW", "NGK", "Febi", "ZF", "Mahle", "Hella", "Osram"];
+    const badgeTypes = ["In Stock", "Limited Stock", "Fast Moving", "OEM Quality", "Best Seller", "New Arrival"];
+    
+    // High-quality real product images
+    const productImages = {
+        "Engine Parts": "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400",
+        "Brake System": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400",
+        "Suspension System": "https://images.unsplash.com/photo-1552519507-88f166587b36?w=400",
+        "Transmission Parts": "https://images.unsplash.com/photo-1629904853893-c2c8981a1dc5?w=400",
+        "Tires & Wheels": "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400",
+        "Oil & Lubricants": "https://images.unsplash.com/photo-1632684087163-7f2f8f4ae1ab?w=400",
+        "Filters": "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400",
+        "Batteries": "https://images.unsplash.com/photo-1611250282008-d4193b1e4c6c?w=400",
+        "Electrical & Lighting": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400",
+        "Accessories": "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400",
+        "Body Parts": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400",
+        "Cooling System": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400"
+    };
+    
+    // Helper function to escape HTML and prevent XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // Generate realistic products with proper pricing (Rs. 500 - 25,000 range)
+    let products = [];
+    let productId = 1;
+    
+    makesList.forEach(make => {
+        yearsList.forEach(year => {
+            const models = vehicleData[make][year] || [];
+            models.forEach(model => {
+                Object.keys(categoriesData).forEach(category => {
+                    const productNames = categoriesData[category];
+                    // Add 3-4 products per category per vehicle
+                    const numProducts = Math.min(4, productNames.length);
+                    for(let i = 0; i < numProducts; i++) {
+                        const randomName = productNames[i % productNames.length];
+                        const brand = brands[Math.floor(Math.random() * brands.length)];
+                        const basePrice = Math.floor(Math.random() * 15000) + 800; // Rs. 800 to 15,800
+                        const discount = Math.random() > 0.7 ? Math.floor(Math.random() * 20) + 5 : 0;
+                        const stock = Math.random() > 0.2 ? "In Stock" : "Limited Stock";
+                        const badge = badgeTypes[Math.floor(Math.random() * badgeTypes.length)];
+                        
+                        products.push({
+                            id: productId++,
+                            name: `${brand} ${randomName} for ${make} ${model} ${year}`,
+                            sku: `${make.substring(0,2).toUpperCase()}-${year}-${category.substring(0,2)}-${productId}`,
+                            brand: brand,
+                            price: basePrice,
+                            discount: discount,
+                            stock: stock,
+                            badge: badge,
+                            category: category,
+                            compatible: { make: make, model: model, year: year },
+                            image: productImages[category] || productImages["Engine Parts"],
+                            description: `Premium quality ${randomName.toLowerCase()} manufactured for ${make} ${model} ${year}. OEM specification part with 24-month warranty.`,
+                            specs: `Material: High-grade alloy/Composite | Fitment: Direct replacement | Warranty: 24 months | OEM Certified: Yes | Origin: Germany/Japan`
+                        });
+                    }
+                });
+            });
+        });
+    });
+    
+    let cart = [];
+    let garageVehicles = [];
+    const OWNER_PHONE = "923184200767";
+    
+    function whatsappDirect(phone, message) { const cleanPhone = phone.replace(/[^0-9]/g, ''); if(!cleanPhone) return; window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank'); }
+    function showToast(msg, isError = false) { const toast = document.createElement('div'); toast.className = 'toast'; toast.style.background = isError ? '#E63946' : '#2A9D8F'; toast.textContent = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+    
+    function saveCart() { 
+        try {
+            localStorage.setItem('wt_cart', JSON.stringify(cart)); 
+        } catch(e) { console.error('Failed to save cart:', e); }
+        updateCartUI(); 
+    }
+    
+    function loadCart() { 
+        try {
+            const c = localStorage.getItem('wt_cart'); 
+            if(c) {
+                const parsed = JSON.parse(c);
+                if(Array.isArray(parsed)) {
+                    cart = parsed.filter(item => item && typeof item === 'object' && item.id && typeof item.price === 'number');
+                }
+            }
+        } catch(e) { console.error('Failed to load cart:', e); cart = []; }
+        updateCartUI(); 
+    }
+    
+    function validateProduct(product) {
+        return product && typeof product === 'object' && product.id && typeof product.price === 'number' && product.name;
+    }
+    
+    function updateCartUI() {
+        const count = cart.reduce((s, i) => s + (i.qty || 0), 0);
+        document.getElementById('cartCount').innerText = count;
+        const container = document.getElementById('cartItemsList');
+        if(!container) return;
+        if(cart.length === 0) { container.innerHTML = '<p style="color:var(--text-muted);">Your cart is empty</p>'; document.getElementById('cartTotal').innerHTML = ''; return; }
+        let html = ''; let total = 0;
+        cart.forEach(item => { 
+            const itemPrice = item.price || 0;
+            const itemQty = item.qty || 0;
+            total += itemPrice * itemQty;
+            html += `<div class="cart-item"><div><strong>${escapeHtml(item.name || 'Product')}</strong></div><div>Rs. ${itemPrice.toFixed(2)} x ${itemQty} = Rs. ${(itemPrice * itemQty).toFixed(2)}</div><div class="quantity-selector"><button class="qty-btn" onclick="updateQty(${item.id}, -1)">-</button><span>${itemQty}</span><button class="qty-btn" onclick="updateQty(${item.id}, 1)">+</button><button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button></div></div>`;
+        });
+        container.innerHTML = html;
+        document.getElementById('cartTotal').innerHTML = `<strong>Total: Rs. ${total.toFixed(2)}</strong>`;
+    }
+    
+    function updateQty(id, delta) { 
+        const idx = cart.findIndex(i => i.id === id); 
+        if(idx !== -1) { 
+            cart[idx].qty = (cart[idx].qty || 0) + delta; 
+            if(cart[idx].qty <= 0) cart.splice(idx, 1); 
+            saveCart(); 
+        } 
+    }
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); saveCart(); }
+    function addToCart(product) { 
+        if(!validateProduct(product)) { showToast('Invalid product', true); return; }
+        const existing = cart.find(i => i.id === product.id); 
+        if(existing) existing.qty = (existing.qty || 0) + 1; 
+        else cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 }); 
+        saveCart(); 
+        showToast(`${product.name} added to cart`); 
+    }
+    function openCart() { document.getElementById('cartSidebar').classList.add('open'); }
+    function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); }
+    function proceedToCheckout() { if(cart.length === 0) { showToast('Your cart is empty', true); return; } showPage('checkout'); closeCart(); document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth' }); }
+    
+    // Garage Functions
+    function loadGarage() { 
+        try {
+            const saved = localStorage.getItem('wt_garage'); 
+            if(saved) {
+                const parsed = JSON.parse(saved);
+                if(Array.isArray(parsed)) garageVehicles = parsed;
+            }
+        } catch(e) { console.error('Failed to load garage:', e); garageVehicles = []; }
+        renderGarage(); 
+    }
+    function saveGarage() { 
+        try {
+            localStorage.setItem('wt_garage', JSON.stringify(garageVehicles)); 
+        } catch(e) { console.error('Failed to save garage:', e); }
+        renderGarage(); 
+    }
+    function renderGarage() {
+        const container = document.getElementById('garageVehiclesList');
+        if(!container) return;
+        if(garageVehicles.length === 0) { container.innerHTML = '<span style="color:var(--text-muted); font-size:0.8rem;">No vehicles saved. Click "Add Vehicle" to save your cars.</span>'; return; }
+        container.innerHTML = '';
+        garageVehicles.forEach((v, idx) => {
+            const vehicleDiv = document.createElement('div');
+            vehicleDiv.className = 'garage-vehicle';
+            vehicleDiv.innerHTML = `<i class="fas fa-car"></i><span>${escapeHtml(v.make)} ${escapeHtml(v.model)} ${escapeHtml(v.year)}</span><button class="remove-vehicle" onclick="event.stopPropagation(); removeVehicle(${idx})"><i class="fas fa-times"></i></button>`;
+            vehicleDiv.onclick = () => showCompatibleForGarageVehicle(v);
+            container.appendChild(vehicleDiv);
+        });
+    }
+    function removeVehicle(idx) { garageVehicles.splice(idx, 1); saveGarage(); showToast('Vehicle removed from garage'); }
+    function showCompatibleForGarageVehicle(vehicle) { const filtered = products.filter(p => p.compatible.make === vehicle.make && p.compatible.model === vehicle.model && p.compatible.year === vehicle.year); document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(vehicle.make)} ${escapeHtml(vehicle.model)} ${escapeHtml(vehicle.year)} (${filtered.length} items)`; renderCompatibleParts(filtered, vehicle.make, vehicle.model, vehicle.year); showPage('compatible'); }
+    
+    function openAddVehicleModal() { populateVehicleSelects(); document.getElementById('addVehicleModal').style.display = 'flex'; }
+    function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
+    function populateVehicleSelects() { const makeSelect = document.getElementById('vehicleMake'); makeSelect.innerHTML = ''; makesList.forEach(m => { makeSelect.innerHTML += `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`; }); populateVehicleYears(); }
+    function populateVehicleYears() { const yearSelect = document.getElementById('vehicleYear'); yearSelect.innerHTML = ''; yearsList.forEach(y => { yearSelect.innerHTML += `<option value="${escapeHtml(y)}">${escapeHtml(y)}</option>`; }); updateVehicleModels(); }
+    function updateVehicleModels() { const make = document.getElementById('vehicleMake').value; const year = document.getElementById('vehicleYear').value; const modelSelect = document.getElementById('vehicleModel'); if(!make || !year) { modelSelect.innerHTML = '<option value="">Select Make & Year first</option>'; return; } modelSelect.innerHTML = '<option value="">Select Model</option>'; if(vehicleData[make] && vehicleData[make][year]) { vehicleData[make][year].forEach(model => { modelSelect.innerHTML += `<option value="${escapeHtml(model)}">${escapeHtml(model)}</option>`; }); } }
+    function addVehicleToGarage() { const make = document.getElementById('vehicleMake').value; const year = document.getElementById('vehicleYear').value; const model = document.getElementById('vehicleModel').value; if(!make || !year || !model) { showToast('Please select Make, Year, and Model', true); return; } garageVehicles.push({ make, model, year }); saveGarage(); closeAddVehicleModal(); showToast(`${make} ${model} ${year} added to garage`); }
+    document.getElementById('vehicleMake').addEventListener('change', updateVehicleModels);
+    document.getElementById('vehicleYear').addEventListener('change', updateVehicleModels);
+    
+    function renderCategories() {
+        const grid = document.getElementById('categoryGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        const icons = ["fa-engine", "fa-brake-warning", "fa-car-side", "fa-cogs", "fa-circle", "fa-oil-can", "fa-filter", "fa-charging-station", "fa-lightbulb", "fa-couch", "fa-truck", "fa-thermometer-half"];
+        const categories = Object.keys(categoriesData);
+        categories.forEach((cat, idx) => {
+            const card = document.createElement('div'); card.className = 'category-card';
+            card.innerHTML = `<i class="fas ${icons[idx % icons.length]}"></i><h4>${escapeHtml(cat)}</h4><p>${escapeHtml(categoriesData[cat].slice(0,3).join(', '))}...</p>`;
+            card.onclick = () => { const filtered = products.filter(p => p.category === cat); renderProducts(filtered); showPage('products'); showToast(`Showing ${filtered.length} products in ${cat}`); };
+            grid.appendChild(card);
+        });
+    }
+    
+    function getBadgeClass(badge) {
+        if(badge === "In Stock") return "badge-stock";
+        if(badge === "Limited Stock") return "badge-limited";
+        if(badge === "Fast Moving") return "badge-fast";
+        if(badge === "OEM Quality") return "badge-oem";
+        if(badge === "Best Seller") return "badge-seller";
+        if(badge === "New Arrival") return "badge-new";
+        return "badge-stock";
+    }
+    
+    function renderProducts(productArray, targetGridId = 'productGrid') {
+        const grid = document.getElementById(targetGridId);
+        if(!grid) return;
+        grid.innerHTML = '';
+        const productsToShow = productArray.slice(0, 30);
+        productsToShow.forEach(p => {
+            const finalPrice = (p.price || 0) * (1 - (p.discount || 0) / 100);
+            const badgeClass = getBadgeClass(p.badge);
+            const card = document.createElement('div'); card.className = 'product-card';
+            const escapedName = escapeHtml(p.name);
+            const escapedSku = escapeHtml(p.sku);
+            const escapedBrand = escapeHtml(p.brand);
+            card.innerHTML = `<div class="product-badge ${badgeClass}">${escapeHtml(p.badge)}</div><div class="stock-status">${escapeHtml(p.stock)}</div><div class="product-img"><img src="${p.image}" alt="${escapedName}" loading="lazy" onerror="this.src='${productImages.EngineParts}'"></div><div class="product-info"><div class="product-title">${escapedName}</div><div class="price">Rs. ${finalPrice.toFixed(2)}${p.discount > 0 ? ` <span style="font-size:0.8rem; text-decoration:line-through; color:var(--text-muted);">Rs. ${p.price}</span>` : ''}</div><div style="font-size:0.7rem; color:var(--text-muted);">${escapedSku} | ${escapedBrand}</div><div class="card-actions"><button class="btn-sm btn-cart" data-product-id="${p.id}" data-product-name='${escapedName.replace(/'/g, "&#39;")}' data-product-price="${finalPrice}">Add to Cart</button><button class="btn-sm btn-wa" data-product-id="${p.id}">WhatsApp Order</button><button class="btn-sm btn-view" data-product-id="${p.id}">Quick View</button></div></div>`;
+            
+            const addBtn = card.querySelector('.btn-cart');
+            const waBtn = card.querySelector('.btn-wa');
+            const viewBtn = card.querySelector('.btn-view');
+            
+            addBtn.onclick = () => addToCart({id: p.id, name: p.name, price: finalPrice});
+            waBtn.onclick = () => whatsappProductOrder(p.id);
+            viewBtn.onclick = () => enhancedQuickView(p.id);
+            
+            grid.appendChild(card);
+        });
+    }
+    
+    function enhancedQuickView(pid) {
+        const p = products.find(pr => pr.id === pid);
+        if(p) {
+            const final = ((p.price || 0) * (1 - (p.discount || 0) / 100)).toFixed(2);
+            const badgeClass = getBadgeClass(p.badge);
+            const modal = document.getElementById('quickViewModal');
+            document.getElementById('quickViewContent').innerHTML = `
+                <h2 style="margin-bottom:16px;">${escapeHtml(p.name)}</h2>
+                <div class="product-detail-grid">
+                    <div class="detail-image"><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.src='${productImages.EngineParts}'"></div>
+                    <div>
+                        <div class="price" style="font-size:2rem;">Rs. ${final}</div>
+                        ${p.discount > 0 ? `<div style="color:var(--success);">Save ${p.discount}%!</div>` : ''}
+                        <div style="margin:16px 0;"><span class="product-badge ${badgeClass}" style="position:relative; top:0; left:0; display:inline-block;">${escapeHtml(p.badge)}</span> <span class="stock-status" style="position:relative; top:0; right:0; display:inline-block; margin-left:8px;">${escapeHtml(p.stock)}</span></div>
+                        <div><strong>SKU:</strong> ${escapeHtml(p.sku)}</div>
+                        <div><strong>Brand:</strong> ${escapeHtml(p.brand)}</div>
+                        <div><strong>Warranty:</strong> 24 months</div>
+                        <div style="margin:16px 0;"><strong>Compatible Vehicles:</strong><br><span class="compatibility-tag">${escapeHtml(p.compatible.make)} ${escapeHtml(p.compatible.model)} ${escapeHtml(p.compatible.year)}</span></div>
+                        <div class="card-actions" style="margin-top:16px;">
+                            <button class="btn" id="modalAddToCartBtn">Add to Cart</button>
+                            <button class="btn btn-wa" id="modalWhatsAppBtn">Order via WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:24px;">
+                    <h4>Specifications</h4>
+                    <ul class="spec-list"><li><strong>Material:</strong> High-grade alloy/Composite</li><li><strong>Quality:</strong> OEM Certified</li><li><strong>Fitment:</strong> Direct replacement</li><li><strong>Origin:</strong> Germany/Japan</li></ul>
+                </div>
+                <div style="margin-top:16px;"><h4>Description</h4><p>${escapeHtml(p.description)}</p></div>
+                <div style="display:flex; gap:16px; margin-top:24px;"><button class="btn btn-outline" onclick='closeModal()'>Close</button></div>
+            `;
+            
+            document.getElementById('modalAddToCartBtn').onclick = () => { addToCart({id: p.id, name: p.name, price: parseFloat(final)}); closeModal(); };
+            document.getElementById('modalWhatsAppBtn').onclick = () => { whatsappProductOrder(p.id); closeModal(); };
+            
+            modal.style.display = 'flex';
+        }
+    }
+    
+    function whatsappProductOrder(pid) { 
+        const p = products.find(pr => pr.id === pid); 
+        if(p) { 
+            const final = ((p.price || 0) * (1 - (p.discount || 0) / 100)).toFixed(2); 
+            whatsappDirect(OWNER_PHONE, `*Product Inquiry - Welcome Traders*\n\nProduct: ${p.name}\nSKU: ${p.sku}\nPrice: Rs. ${final}\nCompatible: ${p.compatible.make} ${p.compatible.model} ${p.compatible.year}\n\nI would like to order this product.`); 
+        } 
+    }
+    function closeModal() { document.getElementById('quickViewModal').style.display = 'none'; }
+    
+    function renderCompatibleParts(compatibleProducts, make, model, year) {
+        const grid = document.getElementById('compatibleGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        if(compatibleProducts.length === 0) { grid.innerHTML = `<div style="text-align:center; padding:60px; background:var(--bg-card); border-radius:20px;"><i class="fas fa-search" style="font-size:3rem; color:var(--text-muted); margin-bottom:16px; display:block;"></i><h3>No compatible parts found</h3><p style="color:var(--text-muted); margin-top:8px;">No products available for ${escapeHtml(make)} ${escapeHtml(model)} ${escapeHtml(year)}</p><button class="btn" style="margin-top:20px;" onclick="showPage('home')">Browse All Products</button></div>`; return; }
+        compatibleProducts.forEach(p => {
+            const finalPrice = (p.price || 0) * (1 - (p.discount || 0) / 100);
+            const badgeClass = getBadgeClass(p.badge);
+            const card = document.createElement('div'); card.className = 'product-card';
+            const escapedName = escapeHtml(p.name);
+            const escapedSku = escapeHtml(p.sku);
+            const escapedBrand = escapeHtml(p.brand);
+            card.innerHTML = `<div class="product-badge ${badgeClass}">${escapeHtml(p.badge)}</div><div class="stock-status">${escapeHtml(p.stock)}</div><div class="product-img"><img src="${p.image}" alt="${escapedName}" loading="lazy" onerror="this.src='${productImages.EngineParts}'"></div><div class="product-info"><div class="product-title">${escapedName}</div><div class="price">Rs. ${finalPrice.toFixed(2)}${p.discount > 0 ? ` <span style="font-size:0.8rem; text-decoration:line-through; color:var(--text-muted);">Rs. ${p.price}</span>` : ''}</div><div style="font-size:0.7rem; color:var(--text-muted);">${escapedSku} | ${escapedBrand}</div><div style="font-size:0.7rem; color:var(--success); margin:4px 0;">✓ Compatible with ${escapeHtml(p.compatible.make)} ${escapeHtml(p.compatible.model)} ${escapeHtml(p.compatible.year)}</div><div class="card-actions"><button class="btn-sm btn-cart" data-product-id="${p.id}" data-product-price="${finalPrice}">Add to Cart</button><button class="btn-sm btn-wa" data-product-id="${p.id}">WhatsApp Order</button><button class="btn-sm btn-view" data-product-id="${p.id}">Quick View</button></div></div>`;
+            
+            const addBtn = card.querySelector('.btn-cart');
+            const waBtn = card.querySelector('.btn-wa');
+            const viewBtn = card.querySelector('.btn-view');
+            
+            addBtn.onclick = () => addToCart({id: p.id, name: p.name, price: finalPrice});
+            waBtn.onclick = () => whatsappProductOrder(p.id);
+            viewBtn.onclick = () => enhancedQuickView(p.id);
+            
+            grid.appendChild(card);
+        });
+    }
+    
+    function populateMakes() { const makeSelect = document.getElementById('makeFilter'); makeSelect.innerHTML = '<option value="">Select Make</option>'; makesList.forEach(make => { makeSelect.innerHTML += `<option value="${escapeHtml(make)}">${escapeHtml(make)}</option>`; }); }
+    function populateYears() { const yearSelect = document.getElementById('yearFilter'); yearSelect.innerHTML = '<option value="">Select Year</option>'; yearsList.forEach(year => { yearSelect.innerHTML += `<option value="${escapeHtml(year)}">${escapeHtml(year)}</option>`; }); }
+    function updateModels() { const make = document.getElementById('makeFilter').value; const year = document.getElementById('yearFilter').value; const modelSelect = document.getElementById('modelFilter'); if(!make || !year) { modelSelect.innerHTML = '<option value="">Select Make & Year first</option>'; return; } modelSelect.innerHTML = '<option value="">Select Model</option>'; if(vehicleData[make] && vehicleData[make][year]) { vehicleData[make][year].forEach(model => { modelSelect.innerHTML += `<option value="${escapeHtml(model)}">${escapeHtml(model)}</option>`; }); } else { modelSelect.innerHTML = '<option value="">No models available for this year</option>'; } }
+    
+    document.getElementById('makeFilter').addEventListener('change', updateModels);
+    document.getElementById('yearFilter').addEventListener('change', updateModels);
+    document.getElementById('applyFilterBtn').onclick = () => { const make = document.getElementById('makeFilter').value; const year = document.getElementById('yearFilter').value; const model = document.getElementById('modelFilter').value; if(!make || !year || !model) { showToast('Please select Make, Year, and Model first', true); return; } const filtered = products.filter(p => p.compatible.make === make && p.compatible.model === model && p.compatible.year === year); document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(make)} ${escapeHtml(model)} ${escapeHtml(year)} (${filtered.length} items)`; renderCompatibleParts(filtered, make, model, year); showPage('compatible'); };
+    
+    function showPage(page) {
+        document.querySelectorAll('.section').forEach(s => s.classList.add('section-hidden'));
+        document.getElementById('categoriesSection').classList.add('section-hidden');
+        document.getElementById('productsSection').classList.add('section-hidden');
+        document.getElementById('dealerSection').classList.add('section-hidden');
+        document.getElementById('posSection').classList.add('section-hidden');
+        document.getElementById('checkoutSection').classList.add('section-hidden');
+        document.getElementById('compatibleSection').classList.add('section-hidden');
+        if(page === 'home') { document.getElementById('categoriesSection').classList.remove('section-hidden'); document.getElementById('productsSection').classList.remove('section-hidden'); }
+        else if(page === 'categories') { document.getElementById('categoriesSection').classList.remove('section-hidden'); }
+        else if(page === 'products') { document.getElementById('productsSection').classList.remove('section-hidden'); }
+        else if(page === 'dealer') { document.getElementById('dealerSection').classList.remove('section-hidden'); }
+        else if(page === 'pos') { document.getElementById('posSection').classList.remove('section-hidden'); }
+        else if(page === 'checkout') { document.getElementById('checkoutSection').classList.remove('section-hidden'); }
+        else if(page === 'compatible') { document.getElementById('compatibleSection').classList.remove('section-hidden'); }
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        if(page !== 'compatible') { const activeLink = document.querySelector(`.nav-link[data-page="${page}"]`); if(activeLink) activeLink.classList.add('active'); }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    document.querySelectorAll('.nav-link').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const page = link.getAttribute('data-page'); showPage(page); if(page === 'home') { renderProducts(products.slice(0, 24)); renderCategories(); } if(page === 'products') renderProducts(products.slice(0, 30)); if(page === 'categories') renderCategories(); }); });
+    document.getElementById('shopNowBtn').addEventListener('click', () => { showPage('products'); showToast('Browse our premium auto parts collection'); });
+    document.getElementById('becomeDealerBtn').addEventListener('click', () => { showPage('dealer'); showToast('Fill the form to get wholesale pricing'); });
+    
+    function searchProducts() { const term = document.getElementById('globalSearch').value.toLowerCase().trim(); if(term === '') renderProducts(products.slice(0, 30)); else renderProducts(products.filter(p => p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term))); showPage('products'); }
+    
+    function validateFormInputs(business, name, email, phone) {
+        if(!business || !name || !email || !phone) return false;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailRegex.test(email)) return false;
+        const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
+        if(!phoneRegex.test(phone)) return false;
+        return true;
+    }
+    
+    function submitDealerInquiry() {
+        const business = document.getElementById('dealerBusiness').value.trim();
+        const name = document.getElementById('dealerName').value.trim();
+        const email = document.getElementById('dealerEmail').value.trim();
+        const phone = document.getElementById('dealerPhone').value.trim();
+        const msg = document.getElementById('dealerMsg').value.trim();
+        if(!validateFormInputs(business, name, email, phone)) { showToast('Please fill all fields with valid email and phone number', true); return; }
+        whatsappDirect(OWNER_PHONE, `*DEALER INQUIRY - Welcome Traders*\n\nBusiness: ${business}\nOwner: ${name}\nEmail: ${email}\nPhone: ${phone}\nVolume: ${msg}`);
+        whatsappDirect(phone, `Thank you ${name}! Welcome Traders has received your dealer inquiry. Our wholesale team will contact you within 24 hours.`);
+        document.getElementById('dealerSuccess').innerHTML = '<span style="color:var(--success);">✅ Inquiry sent! Check WhatsApp.</span>'; setTimeout(() => document.getElementById('dealerSuccess').innerHTML = '', 4000);
+        document.getElementById('dealerForm').reset();
+    }
+    function whatsappDealerInquiry() { whatsappDirect(OWNER_PHONE, "*DEALER INQUIRY* - I am interested in wholesale pricing for auto parts."); }
+    
+    function validateCheckout(name, phone, address, city) {
+        if(!name || !phone || !address || !city) return false;
+        const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
+        if(!phoneRegex.test(phone)) return false;
+        return true;
+    }
+    
+    function placeOrder() {
+        if(cart.length === 0) { showToast('Your cart is empty', true); return; }
+        const name = document.getElementById('chName').value.trim();
+        const phone = document.getElementById('chPhone').value.trim();
+        const address = document.getElementById('chAddress').value.trim();
+        const city = document.getElementById('chCity').value.trim();
+        const notes = document.getElementById('chNotes').value.trim();
+        if(!validateCheckout(name, phone, address, city)) { showToast('Please fill all required fields with valid phone number', true); return; }
+        let cartDetails = cart.map(i => `${i.name} x${i.qty} = Rs. ${((i.price || 0) * (i.qty || 0)).toFixed(2)}`).join('\n');
+        let total = cart.reduce((s, i) => s + ((i.price || 0) * (i.qty || 0)), 0);
+        const timestamp = new Date().toLocaleString();
+        whatsappDirect(phone, `*WELCOME TRADERS - Order Confirmation*\n\nDear ${name},\n\nYour order has been received!\n\nOrder Details:\n${cartDetails}\n\nTotal: Rs. ${total.toFixed(2)}\nDelivery: Cash on Delivery\nAddress: ${address}, ${city}\n\nThank you!`);
+        whatsappDirect(OWNER_PHONE, `*NEW ORDER*\n\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${address}, ${city}\nNotes: ${notes}\nTime: ${timestamp}\n\nProducts:\n${cartDetails}\n\nTOTAL: Rs. ${total.toFixed(2)}`);
+        cart = []; saveCart(); updateCartUI();
+        document.getElementById('checkoutSuccess').innerHTML = '<span style="color:var(--success);">✅ Order placed! Check WhatsApp.</span>';
+        setTimeout(() => document.getElementById('checkoutSuccess').innerHTML = '', 5000);
+        document.getElementById('checkoutForm').reset(); showPage('home');
+    }
+    
+    document.getElementById('exportCSVBtn').addEventListener('click', () => { let csv = "ID,Name,SKU,Brand,Category,Price,Stock,Compatible Make,Compatible Model,Compatible Year,Badge\n"; products.slice(0, 500).forEach(p => { csv += `${p.id},"${p.name.replace(/"/g, '""')}",${p.sku},${p.brand},${p.category},${p.price},${p.stock},${p.compatible.make},${p.compatible.model},${p.compatible.year},${p.badge}\n`; }); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'welcome_traders_inventory.csv'; link.click(); showToast('Inventory exported'); });
+    
+    document.getElementById('importCSV').addEventListener('change', function(e) { 
+        if(e.target.files[0]) { 
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const content = evt.target.result;
+                    if(content && content.trim()) {
+                        showToast('CSV import feature would process ' + file.name + ' (demo mode)');
+                        document.getElementById('importStatus').innerHTML = '<span style="color:var(--success);">✅ CSV imported! Product data would be updated.</span>';
+                        setTimeout(() => document.getElementById('importStatus').innerHTML = '', 3000);
+                    } else {
+                        showToast('Invalid CSV file', true);
+                    }
+                } catch(err) {
+                    showToast('Error reading CSV file', true);
+                }
+            };
+            reader.readAsText(file);
+        } 
+    });
+    
+    function initTheme() { const saved = localStorage.getItem('wt_theme'); if(saved === 'light') document.body.classList.add('light-mode'); }
+    function toggleTheme() { document.body.classList.toggle('light-mode'); localStorage.setItem('wt_theme', document.body.classList.contains('light-mode') ? 'light' : 'dark'); }
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    
+    initTheme(); loadCart(); loadGarage(); renderCategories(); renderProducts(products.slice(0, 24)); populateMakes(); populateYears(); showPage('home');
+    
+    window.addToCart = addToCart; window.updateQty = updateQty; window.removeFromCart = removeFromCart; window.openCart = openCart; window.closeCart = closeCart; window.proceedToCheckout = proceedToCheckout;
+    window.whatsappProductOrder = whatsappProductOrder; window.enhancedQuickView = enhancedQuickView; window.closeModal = closeModal; window.submitDealerInquiry = submitDealerInquiry;
+    window.whatsappDealerInquiry = whatsappDealerInquiry; window.placeOrder = placeOrder; window.searchProducts = searchProducts;
+    window.openAddVehicleModal = openAddVehicleModal; window.closeAddVehicleModal = closeAddVehicleModal; window.addVehicleToGarage = addVehicleToGarage; window.removeVehicle = removeVehicle;
+</script>
+</body>
+</html>
