@@ -184,6 +184,7 @@
                 <li><a class="nav-link" data-page="products">Products</a></li>
                 <li><a class="nav-link" data-page="dealer">Dealer</a></li>
                 <li><a class="nav-link" data-page="pos">POS Sync</a></li>
+                <li><a class="nav-link" data-page="orderHistory">My Orders</a></li>
             </ul>
         </div>
         <div class="header-actions">
@@ -285,6 +286,14 @@
             <div id="checkoutSuccess" style="margin-top:16px;"></div>
         </div>
     </div>
+
+    <div id="orderHistorySection" class="section section-hidden">
+        <h2 class="section-title">My Order History</h2>
+        <div class="form-card">
+            <div id="orderHistoryList"></div>
+            <button class="btn btn-outline" onclick="showPage('home')" style="margin-top:20px;">Back to Home</button>
+        </div>
+    </div>
 </div>
 
 <footer class="footer">
@@ -330,7 +339,6 @@
     const makesList = Object.keys(vehicleData);
     const yearsList = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"];
     
-    // REAL AUTOMOTIVE CATEGORIES WITH REAL PRODUCT NAMES
     const categoriesData = {
         "Engine Parts": ["Engine Oil Filter", "Air Filter Element", "Spark Plug Set", "Timing Belt Kit", "Fuel Injector", "Alternator Assembly", "Starter Motor", "Radiator Coolant"],
         "Brake System": ["Front Brake Pads", "Rear Brake Shoes", "Brake Disc Rotor", "Brake Caliper", "Brake Master Cylinder", "Brake Fluid DOT4", "ABS Sensor", "Parking Brake Cable"],
@@ -349,7 +357,6 @@
     const brands = ["Bosch", "Brembo", "Denso", "Valeo", "Mann Filter", "Mobil 1", "Castrol", "Bilstein", "TRW", "NGK", "Febi", "ZF", "Mahle", "Hella", "Osram"];
     const badgeTypes = ["In Stock", "Limited Stock", "Fast Moving", "OEM Quality", "Best Seller", "New Arrival"];
     
-    // High-quality real product images
     const productImages = {
         "Engine Parts": "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=400",
         "Brake System": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400",
@@ -365,7 +372,6 @@
         "Cooling System": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=400"
     };
     
-    // Helper function to escape HTML and prevent XSS
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -378,7 +384,6 @@
         });
     }
     
-    // Generate realistic products with proper pricing (Rs. 500 - 25,000 range)
     let products = [];
     let productId = 1;
     
@@ -388,12 +393,11 @@
             models.forEach(model => {
                 Object.keys(categoriesData).forEach(category => {
                     const productNames = categoriesData[category];
-                    // Add 3-4 products per category per vehicle
                     const numProducts = Math.min(4, productNames.length);
                     for(let i = 0; i < numProducts; i++) {
                         const randomName = productNames[i % productNames.length];
                         const brand = brands[Math.floor(Math.random() * brands.length)];
-                        const basePrice = Math.floor(Math.random() * 15000) + 800; // Rs. 800 to 15,800
+                        const basePrice = Math.floor(Math.random() * 15000) + 800;
                         const discount = Math.random() > 0.7 ? Math.floor(Math.random() * 20) + 5 : 0;
                         const stock = Math.random() > 0.2 ? "In Stock" : "Limited Stock";
                         const badge = badgeTypes[Math.floor(Math.random() * badgeTypes.length)];
@@ -421,10 +425,35 @@
     
     let cart = [];
     let garageVehicles = [];
+    let lastCompatibleResults = null;
+    let lastCompatibleFilter = null;
     const OWNER_PHONE = "923184200767";
     
-    function whatsappDirect(phone, message) { const cleanPhone = phone.replace(/[^0-9]/g, ''); if(!cleanPhone) return; window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank'); }
-    function showToast(msg, isError = false) { const toast = document.createElement('div'); toast.className = 'toast'; toast.style.background = isError ? '#E63946' : '#2A9D8F'; toast.textContent = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+    function whatsappDirect(phone, message) { 
+        const cleanPhone = phone.replace(/[^0-9]/g, ''); 
+        if(!cleanPhone) return false; 
+        try {
+            const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+            const newWindow = window.open(waUrl, '_blank');
+            if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                window.location.href = waUrl;
+            }
+            return true;
+        } catch(e) {
+            console.error('WhatsApp failed:', e);
+            showToast(`Unable to open WhatsApp. Please contact us directly at +92 ${OWNER_PHONE.substring(2)}`, true);
+            return false;
+        }
+    }
+    
+    function showToast(msg, isError = false) { 
+        const toast = document.createElement('div'); 
+        toast.className = 'toast'; 
+        toast.style.background = isError ? '#E63946' : '#2A9D8F'; 
+        toast.textContent = msg; 
+        document.body.appendChild(toast); 
+        setTimeout(() => toast.remove(), 3000); 
+    }
     
     function saveCart() { 
         try {
@@ -475,7 +504,9 @@
             saveCart(); 
         } 
     }
+    
     function removeFromCart(id) { cart = cart.filter(i => i.id !== id); saveCart(); }
+    
     function addToCart(product) { 
         if(!validateProduct(product)) { showToast('Invalid product', true); return; }
         const existing = cart.find(i => i.id === product.id); 
@@ -484,11 +515,23 @@
         saveCart(); 
         showToast(`${product.name} added to cart`); 
     }
+    
     function openCart() { document.getElementById('cartSidebar').classList.add('open'); }
     function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); }
-    function proceedToCheckout() { if(cart.length === 0) { showToast('Your cart is empty', true); return; } showPage('checkout'); closeCart(); document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth' }); }
     
-    // Garage Functions
+    function proceedToCheckout() { 
+        if(cart.length === 0) { 
+            showToast('Your cart is empty. Add some products first!', true); 
+            closeCart();
+            return; 
+        } 
+        showPage('checkout'); 
+        closeCart(); 
+        setTimeout(() => {
+            document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+    
     function loadGarage() { 
         try {
             const saved = localStorage.getItem('wt_garage'); 
@@ -499,12 +542,14 @@
         } catch(e) { console.error('Failed to load garage:', e); garageVehicles = []; }
         renderGarage(); 
     }
+    
     function saveGarage() { 
         try {
             localStorage.setItem('wt_garage', JSON.stringify(garageVehicles)); 
         } catch(e) { console.error('Failed to save garage:', e); }
         renderGarage(); 
     }
+    
     function renderGarage() {
         const container = document.getElementById('garageVehiclesList');
         if(!container) return;
@@ -513,13 +558,40 @@
         garageVehicles.forEach((v, idx) => {
             const vehicleDiv = document.createElement('div');
             vehicleDiv.className = 'garage-vehicle';
+            const lastSelected = localStorage.getItem('wt_last_selected_vehicle');
+            let isActive = false;
+            if(lastSelected) {
+                try {
+                    const last = JSON.parse(lastSelected);
+                    if(last.make === v.make && last.model === v.model && last.year === v.year) {
+                        isActive = true;
+                    }
+                } catch(e) {}
+            }
+            if(isActive) {
+                vehicleDiv.style.borderColor = 'var(--accent)';
+                vehicleDiv.style.background = 'var(--accent-dark)';
+            }
             vehicleDiv.innerHTML = `<i class="fas fa-car"></i><span>${escapeHtml(v.make)} ${escapeHtml(v.model)} ${escapeHtml(v.year)}</span><button class="remove-vehicle" onclick="event.stopPropagation(); removeVehicle(${idx})"><i class="fas fa-times"></i></button>`;
-            vehicleDiv.onclick = () => showCompatibleForGarageVehicle(v);
+            vehicleDiv.onclick = () => {
+                localStorage.setItem('wt_last_selected_vehicle', JSON.stringify({ make: v.make, model: v.model, year: v.year }));
+                showCompatibleForGarageVehicle(v);
+                renderGarage();
+            };
             container.appendChild(vehicleDiv);
         });
     }
+    
     function removeVehicle(idx) { garageVehicles.splice(idx, 1); saveGarage(); showToast('Vehicle removed from garage'); }
-    function showCompatibleForGarageVehicle(vehicle) { const filtered = products.filter(p => p.compatible.make === vehicle.make && p.compatible.model === vehicle.model && p.compatible.year === vehicle.year); document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(vehicle.make)} ${escapeHtml(vehicle.model)} ${escapeHtml(vehicle.year)} (${filtered.length} items)`; renderCompatibleParts(filtered, vehicle.make, vehicle.model, vehicle.year); showPage('compatible'); }
+    
+    function showCompatibleForGarageVehicle(vehicle) { 
+        const filtered = products.filter(p => p.compatible.make === vehicle.make && p.compatible.model === vehicle.model && p.compatible.year === vehicle.year); 
+        lastCompatibleResults = filtered;
+        lastCompatibleFilter = { make: vehicle.make, model: vehicle.model, year: vehicle.year };
+        document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(vehicle.make)} ${escapeHtml(vehicle.model)} ${escapeHtml(vehicle.year)} (${filtered.length} items)`; 
+        renderCompatibleParts(filtered, vehicle.make, vehicle.model, vehicle.year); 
+        showPage('compatible'); 
+    }
     
     function openAddVehicleModal() { populateVehicleSelects(); document.getElementById('addVehicleModal').style.display = 'flex'; }
     function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
@@ -539,7 +611,18 @@
         categories.forEach((cat, idx) => {
             const card = document.createElement('div'); card.className = 'category-card';
             card.innerHTML = `<i class="fas ${icons[idx % icons.length]}"></i><h4>${escapeHtml(cat)}</h4><p>${escapeHtml(categoriesData[cat].slice(0,3).join(', '))}...</p>`;
-            card.onclick = () => { const filtered = products.filter(p => p.category === cat); renderProducts(filtered); showPage('products'); showToast(`Showing ${filtered.length} products in ${cat}`); };
+            card.onclick = () => { 
+                const filtered = products.filter(p => p.category === cat); 
+                renderProducts(filtered); 
+                showPage('products'); 
+                showToast(`Showing ${filtered.length} products in ${cat}`);
+                setTimeout(() => {
+                    const productsSection = document.getElementById('productsSection');
+                    if(productsSection) {
+                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            };
             grid.appendChild(card);
         });
     }
@@ -626,6 +709,7 @@
             whatsappDirect(OWNER_PHONE, `*Product Inquiry - Welcome Traders*\n\nProduct: ${p.name}\nSKU: ${p.sku}\nPrice: Rs. ${final}\nCompatible: ${p.compatible.make} ${p.compatible.model} ${p.compatible.year}\n\nI would like to order this product.`); 
         } 
     }
+    
     function closeModal() { document.getElementById('quickViewModal').style.display = 'none'; }
     
     function renderCompatibleParts(compatibleProducts, make, model, year) {
@@ -660,7 +744,19 @@
     
     document.getElementById('makeFilter').addEventListener('change', updateModels);
     document.getElementById('yearFilter').addEventListener('change', updateModels);
-    document.getElementById('applyFilterBtn').onclick = () => { const make = document.getElementById('makeFilter').value; const year = document.getElementById('yearFilter').value; const model = document.getElementById('modelFilter').value; if(!make || !year || !model) { showToast('Please select Make, Year, and Model first', true); return; } const filtered = products.filter(p => p.compatible.make === make && p.compatible.model === model && p.compatible.year === year); document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(make)} ${escapeHtml(model)} ${escapeHtml(year)} (${filtered.length} items)`; renderCompatibleParts(filtered, make, model, year); showPage('compatible'); };
+    
+    document.getElementById('applyFilterBtn').onclick = () => { 
+        const make = document.getElementById('makeFilter').value; 
+        const year = document.getElementById('yearFilter').value; 
+        const model = document.getElementById('modelFilter').value; 
+        if(!make || !year || !model) { showToast('Please select Make, Year, and Model first', true); return; } 
+        const filtered = products.filter(p => p.compatible.make === make && p.compatible.model === model && p.compatible.year === year); 
+        lastCompatibleResults = filtered;
+        lastCompatibleFilter = { make: make, model: model, year: year };
+        document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(make)} ${escapeHtml(model)} ${escapeHtml(year)} (${filtered.length} items)`; 
+        renderCompatibleParts(filtered, make, model, year); 
+        showPage('compatible'); 
+    };
     
     function showPage(page) {
         document.querySelectorAll('.section').forEach(s => s.classList.add('section-hidden'));
@@ -670,13 +766,45 @@
         document.getElementById('posSection').classList.add('section-hidden');
         document.getElementById('checkoutSection').classList.add('section-hidden');
         document.getElementById('compatibleSection').classList.add('section-hidden');
-        if(page === 'home') { document.getElementById('categoriesSection').classList.remove('section-hidden'); document.getElementById('productsSection').classList.remove('section-hidden'); }
+        document.getElementById('orderHistorySection').classList.add('section-hidden');
+        
+        const filterPanel = document.getElementById('filterPanel');
+        if(filterPanel) {
+            if(page === 'compatible') {
+                filterPanel.style.display = 'none';
+            } else {
+                filterPanel.style.display = 'flex';
+            }
+        }
+        
+        if(page === 'home') { 
+            document.getElementById('categoriesSection').classList.remove('section-hidden'); 
+            document.getElementById('productsSection').classList.remove('section-hidden'); 
+            const makeFilter = document.getElementById('makeFilter');
+            const yearFilter = document.getElementById('yearFilter');
+            const modelFilter = document.getElementById('modelFilter');
+            if(makeFilter) makeFilter.value = '';
+            if(yearFilter) yearFilter.value = '';
+            if(modelFilter) modelFilter.innerHTML = '<option value="">Select Make & Year first</option>';
+            renderProducts(products.slice(0, 24));
+            renderCategories();
+        }
         else if(page === 'categories') { document.getElementById('categoriesSection').classList.remove('section-hidden'); }
         else if(page === 'products') { document.getElementById('productsSection').classList.remove('section-hidden'); }
         else if(page === 'dealer') { document.getElementById('dealerSection').classList.remove('section-hidden'); }
         else if(page === 'pos') { document.getElementById('posSection').classList.remove('section-hidden'); }
         else if(page === 'checkout') { document.getElementById('checkoutSection').classList.remove('section-hidden'); }
-        else if(page === 'compatible') { document.getElementById('compatibleSection').classList.remove('section-hidden'); }
+        else if(page === 'orderHistory') { 
+            document.getElementById('orderHistorySection').classList.remove('section-hidden');
+            displayOrderHistory();
+        }
+        else if(page === 'compatible') { 
+            document.getElementById('compatibleSection').classList.remove('section-hidden');
+            if(lastCompatibleResults && lastCompatibleFilter) {
+                document.getElementById('compatibleTitle').innerHTML = `<i class="fas fa-car"></i> Compatible Parts for ${escapeHtml(lastCompatibleFilter.make)} ${escapeHtml(lastCompatibleFilter.model)} ${escapeHtml(lastCompatibleFilter.year)} (${lastCompatibleResults.length} items)`;
+                renderCompatibleParts(lastCompatibleResults, lastCompatibleFilter.make, lastCompatibleFilter.model, lastCompatibleFilter.year);
+            }
+        }
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
         if(page !== 'compatible') { const activeLink = document.querySelector(`.nav-link[data-page="${page}"]`); if(activeLink) activeLink.classList.add('active'); }
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -686,7 +814,28 @@
     document.getElementById('shopNowBtn').addEventListener('click', () => { showPage('products'); showToast('Browse our premium auto parts collection'); });
     document.getElementById('becomeDealerBtn').addEventListener('click', () => { showPage('dealer'); showToast('Fill the form to get wholesale pricing'); });
     
-    function searchProducts() { const term = document.getElementById('globalSearch').value.toLowerCase().trim(); if(term === '') renderProducts(products.slice(0, 30)); else renderProducts(products.filter(p => p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term))); showPage('products'); }
+    function searchProducts() { 
+        const term = document.getElementById('globalSearch').value.toLowerCase().trim(); 
+        if(term === '') {
+            renderProducts(products.slice(0, 30));
+            showToast('Showing all products');
+        } else {
+            const results = products.filter(p => p.name.toLowerCase().includes(term) || p.sku.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term));
+            renderProducts(results);
+            if(results.length === 0) {
+                showToast('No products found', true);
+            } else {
+                showToast(`Found ${results.length} products matching "${term}"`);
+            }
+        }
+        showPage('products');
+        setTimeout(() => {
+            const productsSection = document.getElementById('productsSection');
+            if(productsSection) {
+                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
     
     function validateFormInputs(business, name, email, phone) {
         if(!business || !name || !email || !phone) return false;
@@ -709,6 +858,7 @@
         document.getElementById('dealerSuccess').innerHTML = '<span style="color:var(--success);">✅ Inquiry sent! Check WhatsApp.</span>'; setTimeout(() => document.getElementById('dealerSuccess').innerHTML = '', 4000);
         document.getElementById('dealerForm').reset();
     }
+    
     function whatsappDealerInquiry() { whatsappDirect(OWNER_PHONE, "*DEALER INQUIRY* - I am interested in wholesale pricing for auto parts."); }
     
     function validateCheckout(name, phone, address, city) {
@@ -716,6 +866,47 @@
         const phoneRegex = /^[0-9+\-\s()]{10,15}$/;
         if(!phoneRegex.test(phone)) return false;
         return true;
+    }
+    
+    function displayOrderHistory() {
+        const container = document.getElementById('orderHistoryList');
+        if(!container) return;
+        
+        try {
+            const orders = JSON.parse(localStorage.getItem('wt_orders') || '[]');
+            if(orders.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding:40px;">No orders found. Start shopping to see your orders here.</p>';
+                return;
+            }
+            
+            const reversedOrders = [...orders].reverse();
+            let html = '';
+            reversedOrders.forEach(order => {
+                html += `<div style="background:var(--bg-elevated); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px;">
+                            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px;">
+                                <strong style="color:var(--accent);">Order #${escapeHtml(order.orderId)}</strong>
+                                <span style="color:var(--text-muted);">${escapeHtml(order.timestamp)}</span>
+                            </div>
+                            <div><strong>Status:</strong> <span style="color:var(--success);">${escapeHtml(order.status)}</span></div>
+                            <div style="margin-top:12px;"><strong>Items:</strong></div>
+                            <ul style="margin-left:20px; margin-top:8px;">`;
+                order.items.forEach(item => {
+                    html += `<li>${escapeHtml(item.name)} x${item.qty} = Rs. ${((item.price || 0) * (item.qty || 0)).toFixed(2)}</li>`;
+                });
+                html += `</ul>
+                            <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+                                <strong>Total: Rs. ${order.total.toFixed(2)}</strong>
+                            </div>
+                            <div style="margin-top:8px; font-size:0.8rem; color:var(--text-muted);">
+                                Delivery: ${escapeHtml(order.address)}, ${escapeHtml(order.city)}
+                            </div>
+                        </div>`;
+            });
+            container.innerHTML = html;
+        } catch(e) {
+            console.error('Failed to load orders:', e);
+            container.innerHTML = '<p style="color:var(--accent);">Error loading order history</p>';
+        }
     }
     
     function placeOrder() {
@@ -726,15 +917,101 @@
         const city = document.getElementById('chCity').value.trim();
         const notes = document.getElementById('chNotes').value.trim();
         if(!validateCheckout(name, phone, address, city)) { showToast('Please fill all required fields with valid phone number', true); return; }
-        let cartDetails = cart.map(i => `${i.name} x${i.qty} = Rs. ${((i.price || 0) * (i.qty || 0)).toFixed(2)}`).join('\n');
+        
+        const orderId = 'WT-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+        let cartDetails = cart.map((i, idx) => `${idx+1}. ${i.name} x${i.qty} = Rs. ${((i.price || 0) * (i.qty || 0)).toFixed(2)}`).join('\n');
         let total = cart.reduce((s, i) => s + ((i.price || 0) * (i.qty || 0)), 0);
-        const timestamp = new Date().toLocaleString();
-        whatsappDirect(phone, `*WELCOME TRADERS - Order Confirmation*\n\nDear ${name},\n\nYour order has been received!\n\nOrder Details:\n${cartDetails}\n\nTotal: Rs. ${total.toFixed(2)}\nDelivery: Cash on Delivery\nAddress: ${address}, ${city}\n\nThank you!`);
-        whatsappDirect(OWNER_PHONE, `*NEW ORDER*\n\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${address}, ${city}\nNotes: ${notes}\nTime: ${timestamp}\n\nProducts:\n${cartDetails}\n\nTOTAL: Rs. ${total.toFixed(2)}`);
-        cart = []; saveCart(); updateCartUI();
-        document.getElementById('checkoutSuccess').innerHTML = '<span style="color:var(--success);">✅ Order placed! Check WhatsApp.</span>';
-        setTimeout(() => document.getElementById('checkoutSuccess').innerHTML = '', 5000);
-        document.getElementById('checkoutForm').reset(); showPage('home');
+        const timestamp = new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' });
+        
+        const orderRecord = {
+            orderId: orderId,
+            customerName: name,
+            customerPhone: phone,
+            address: address,
+            city: city,
+            notes: notes,
+            items: cart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+            total: total,
+            timestamp: timestamp,
+            status: 'pending'
+        };
+        
+        try {
+            const orders = JSON.parse(localStorage.getItem('wt_orders') || '[]');
+            orders.push(orderRecord);
+            localStorage.setItem('wt_orders', JSON.stringify(orders));
+        } catch(e) { console.error('Failed to save order record:', e); }
+        
+        const customerMessage = `🏭 *WELCOME TRADERS - Order Confirmation* 🏭\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `📋 *ORDER DETAILS*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `🆔 Order ID: ${orderId}\n` +
+            `👤 Customer: ${name}\n` +
+            `📞 Phone: ${phone}\n` +
+            `📍 Address: ${address}, ${city}\n` +
+            `📅 Date: ${timestamp}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `📦 *ITEMS ORDERED*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `${cartDetails}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `💰 *TOTAL AMOUNT: Rs. ${total.toFixed(2)}*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `💳 Payment Method: Cash on Delivery\n` +
+            `🚚 Delivery: 2-3 business days\n\n` +
+            `✅ Your order has been received and will be processed shortly.\n` +
+            `📞 For inquiries, contact: +92 318 4200767\n\n` +
+            `*Thank you for shopping with Welcome Traders!* 🚗`;
+        
+        const ownerMessage = `🔔 *NEW ORDER ALERT - Welcome Traders* 🔔\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `📋 *ORDER INFORMATION*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `🆔 Order ID: ${orderId}\n` +
+            `👤 Customer: ${name}\n` +
+            `📞 Phone: ${phone}\n` +
+            `📍 Address: ${address}, ${city}\n` +
+            `📝 Notes: ${notes || 'None'}\n` +
+            `📅 Time: ${timestamp}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `📦 *ITEMS ORDERED*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `${cartDetails}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `💰 *TOTAL: Rs. ${total.toFixed(2)}*\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `🔄 Status: Pending Confirmation\n` +
+            `📞 Contact customer to confirm order.`;
+        
+        let ownerSent = false;
+        
+        try {
+            ownerSent = whatsappDirect(OWNER_PHONE, ownerMessage);
+        } catch(e) {
+            console.error('Failed to send owner WhatsApp:', e);
+        }
+        
+        try {
+            whatsappDirect(phone, customerMessage);
+        } catch(e) {
+            console.error('Failed to send customer WhatsApp:', e);
+        }
+        
+        if(ownerSent) {
+            cart = []; 
+            saveCart(); 
+            updateCartUI();
+            document.getElementById('checkoutSuccess').innerHTML = `<span style="color:var(--success);">✅ Order #${orderId} placed successfully! Check WhatsApp for confirmation.</span>`;
+        } else {
+            document.getElementById('checkoutSuccess').innerHTML = '<span style="color:var(--accent);">❌ Order submission failed. Please try again or call +92 318 4200767</span>';
+            showToast('Order failed. Please try again or call directly.', true);
+            return;
+        }
+        
+        setTimeout(() => document.getElementById('checkoutSuccess').innerHTML = '', 8000);
+        document.getElementById('checkoutForm').reset();
+        showPage('home');
     }
     
     document.getElementById('exportCSVBtn').addEventListener('click', () => { let csv = "ID,Name,SKU,Brand,Category,Price,Stock,Compatible Make,Compatible Model,Compatible Year,Badge\n"; products.slice(0, 500).forEach(p => { csv += `${p.id},"${p.name.replace(/"/g, '""')}",${p.sku},${p.brand},${p.category},${p.price},${p.stock},${p.compatible.make},${p.compatible.model},${p.compatible.year},${p.badge}\n`; }); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'welcome_traders_inventory.csv'; link.click(); showToast('Inventory exported'); });
